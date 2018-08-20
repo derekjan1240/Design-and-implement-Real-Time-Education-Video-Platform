@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <title>OAuth Test</title>
+    </head>
+
+    <body onload="createList()" style="background: #E1EFE6;">
+        <% include header %>
+        
+        <!-- 影片標題 -->
+        <div class="container" style="padding-left: 50px; width: 100%; "> 
+          <div id ='courseTitle' class="col-sm-10" style="width: 100%; padding-bottom: 20px; color: #191919">
+            <h2><b> <%= courseName %> </b></h2>  
+            <h4> Teacher: <%= courseAbout %> </h4>
+            <h4> Introduction: <%= courseAbout %> </h4> 
+            <br>
+            <button class='personalBtn' onclick="location.href ='/course/collection/<%= courseName %>' ">Collection </button>
+            <button class='personalBtn' onclick="location.href ='#' ">Button </button>
+            <!-- <button class='personalBtn' onclick="location.href ='/share/<%= courseName %>' ">share </button> -->
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="fb-share-button" 
+              data-href="/course/<%= courseName %>/1" 
+              data-layout="button"
+              size='large'>
+            </div>
+            &nbsp&nbsp&nbsp
+            <div class="line-it-button" data-lang="zh_Hant" data-type="share-a" data-url="/course/<%=courseName%>/1"  
+               style="display: none;"></div>
+            </div>  
+        </div>
+
+        <!-- 影片區 -->
+        <div class="container" style="padding-left: 50px;  width: 100%; height: 100%; background: #E1EFE6;">
+          <div id= "episodeList" class="col-sm-3">
+              <!-- 動態生成 -->
+          </div>    
+          <div id="video" class="col-sm-6">
+            <video class="video" id="videoPlayer" controls controlsList="nodownload" style="height: 100%;">
+              <source src='http://127.0.0.1:3000/video/<%= courseName %>/<%= courseId %>' type="video/mp4">
+            </video>
+          </div>    
+        </div> 
+        
+        <div class="container" id="footer" style="text-align: right; padding: 50px;">
+          
+          
+
+        </div>     
+
+
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+          
+        <script src="https://d.line-scdn.net/r/web/social-plugin/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    
+    </body>
+</html>
+
+<style type="text/css">
+  
+  html, body {
+    height: 100%;
+  }
+
+  .course_li{
+    list-style-type:none;
+    height: 50px;
+  }
+
+  .video{
+      width: 100%;
+      padding: 20px;
+  }
+
+  .courseBtn {
+    width: 200px;
+    background-color: #F9E784; 
+    border: 2px solid #F1E8B8;
+    color: #191919;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    transition-duration: 0.4s;
+  }
+
+  .personalBtn{
+    background-color: #008CBA; 
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .courseBtn:hover {
+    background-color: #D05353; 
+    color: white;
+    text-decoration:none;
+  }
+
+  a:link, a:visited {
+    background-color: none;
+    color: #191919;
+    text-align: center;
+    text-decoration:none;
+  }
+
+
+  a:hover, a:active {
+      background-color: none; 
+      color: white;
+  }
+
+  #episodeList{
+    padding: 25px;
+    background: #F9E784; 
+    height: 500px;
+    text-align: center;
+  }
+
+  #video{
+    padding-top: 25px; 
+    background: #F1E8B8; 
+    height: 500px;
+  }
+
+  #footer{
+    height: 50px;
+  }
+
+</style>
+
+<script type="text/javascript">
+
+  function createList(){
+
+    let episodeList = document.getElementById("episodeList");
+    let ul = document.createElement('ul');
+
+    episodeList.appendChild(ul);
+
+    for (var i=1; i<=<%= courseEp %>; i++){
+
+      let li = document.createElement('li');
+      li.setAttribute("class", "course_li" );
+      ul.appendChild(li);
+
+      let btn = document.createElement("BUTTON");
+      btn.setAttribute("class", "courseBtn" );
+      li.appendChild(btn);
+
+      let alink = document.createElement("a");
+      alink.setAttribute("href", '/course/<%= courseName %>/'+ i.toString());
+      alink.innerHTML = 'Course Ep' + i.toString();
+      btn.appendChild(alink);
+
+    }
+  }
+</script>

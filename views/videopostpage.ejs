@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body style="background: #E1EFE6;">
+	<% include header %>
+	<h1><%= Videopage %></h1>
+
+	<div class='container' style="padding-top: 50px; background: #DCDCDC">
+	    <div class="col-sm-12">
+	        <form method="post" enctype="multipart/form-data">
+	            <input type="file" id="files" name="files" accept=".mp4" multiple="multiple" />
+	            <p style="margin-top: 20px;">
+	                <input type="submit" value="Upload Files" class="btn btn-md btn-primary" />
+	            </p>
+	        </form>
+	    </div>
+	</div>
+
+</body>
+</html>
