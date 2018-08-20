@@ -54,7 +54,7 @@ router.get('/:courseName/:coursrEp', function(req, res, next){
 
 
 
-//上傳課程影片 歸類課程路徑上傳資料庫
+//管理員上傳課程影片 歸類課程路徑上傳資料庫
 router.post('/upload', function(req, res){
 
     Course.findOne({courseName: req.body.courseName}).then((newCourse) => {

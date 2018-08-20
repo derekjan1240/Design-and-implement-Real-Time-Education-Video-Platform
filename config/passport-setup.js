@@ -77,8 +77,8 @@ passport.use('signup',
                     });
                 }
             });
-        })
-);
+        }
+));
 
 
 // GoogleStrategy --------------------------------
@@ -88,7 +88,7 @@ passport.use(
         // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'https://0f393789.ngrok.io/auth/google/redirect'   //when use ngrok
+        callbackURL: 'https://600b8d5b.ngrok.io/auth/google/redirect'   //when use ngrok
         //callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
 
     }, (accessToken, refreshToken, profile, done) => {
@@ -192,3 +192,61 @@ passport.use(
 
     })
 )
+
+
+//PROFILE MODIFY PASSPORT
+passport.use('settingModify', 
+
+    new LocalStrategy( 
+
+         {
+             usernameField: 'Name',
+             passwordField: 'Email',
+             passReqToCallback: true
+         },
+
+        (req, username, password, done) => {
+
+            //未驗證用戶
+            if(!req.user.active){
+                return done(null, false);
+            }
+
+            //更改帳號資料
+            User.findOne({email: password}).then((currentUser) => {
+
+                if(currentUser){
+
+                    //新email已有人使用
+                    if(password!=req.user.email){    
+                        return done(null, false, { message: 'exist user' });
+                    }else{
+                        //改名字不改email
+                        User.findOne({email: req.user.email}).then((member) => {
+
+                            member.username = username;
+
+                            member.save().then((updateMember) => {
+                                done(null, updateMember);
+                            });
+                        })
+                    }
+                    
+                    
+                }else{
+
+                    User.findOne({email: req.user.email}).then((member) => {
+                        member.username = username;
+                        member.email =  password;
+                        member.active = false;
+
+                        member.save().then((updateMember) => {
+                            Mailer(updateMember.email, updateMember._id);
+                            done(null, updateMember);
+                        });
+                    })
+
+                }
+            });
+        }
+));

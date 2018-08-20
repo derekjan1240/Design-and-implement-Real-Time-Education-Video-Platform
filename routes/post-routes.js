@@ -1,14 +1,14 @@
 const router = require('express').Router();
 
-const authCheck = (req, res, next) => {
-    if(!req.user){
-        res.redirect('/auth/login');
+const activeCheck = (req, res, next) => {
+    if(!req.user.active){
+        res.redirect('/course/free/CS/1');
     } else {
         next();
     }
 };
 
-router.get('/', authCheck, (req, res) => {
+router.get('/', activeCheck, (req, res) => {
     res.render('videopostpage', { user: req.user, Videopage: 'postvideos'});
 });
 

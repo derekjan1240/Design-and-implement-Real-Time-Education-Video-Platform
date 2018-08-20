@@ -10,6 +10,14 @@ const authCheck = (req, res, next) => {
     }
 };
 
+const activeCheck = (req, res, next) => {
+    if(!req.user.active){
+        res.redirect('/course/free/CS/1');
+    } else {
+        next();
+    }
+};
+
 //免費影片
 router.get('/free/:courseType/:page', (req, res) => {
 
@@ -41,7 +49,7 @@ router.get('/free/:courseType/:page', (req, res) => {
 });
 
 //付費影片
-router.get('/pay/:courseType/:page', (req, res) => {
+router.get('/pay/:courseType/:page', activeCheck, (req, res) => {
 	
 	Course.find({courseType: req.params.courseType}).then((currentCourse) => {
 

@@ -23,81 +23,71 @@
                     <a class="nav-link" href="/profile/course">Course</a>
                   </li>
               </ul>
-            </div>
+            </div> 
         </div>
         <br>
         <main>           
             <!-- 設定頁面 -->
-            <% if (Msg === 'setting' || Msg === 'profile') { %>
+            
                 <div class="container" style="width: 80%; ">
                     <h3>Hi! <%= user.username %> </h3>
                     <% if (user.thumbnail) { %>
                         <img src="<%= user.thumbnail %>"/>
                     <% } %>
                     <% if (!user.active) { %>
-                        <h3 style="color: #E58F65;">Please verify your email!</h3>
-                    <% }%>
+                        <h3 style="color: #E58F65;">Please verify your email! 😄</h3>
+                    <% }else{%>
                     
-                    <br><br>
+                        <br><br>
 
-                    <form>
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
-                                placeholder="<%= user.username %>" style="width: 60%;">
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Email</label>
-                        <input type="email" class="form-control" id="exampleInputPassword1" 
-                                placeholder="<%= user.email %>" style="width: 60%;">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Reset</button>
-                    </form>
+                        <% if (Msg === 'setting' || Msg === 'profile') { %>
+                            <form enctype='application/json' method="POST">
+                              <div class="form-group">
+                                <label for="exampleInputEmail1">Name</label>
+                                <input type="text" class="form-control" name='Name' aria-describedby="emailHelp" 
+                                        placeholder="<%= user.username %>" style="width: 60%;">
+                              </div>
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">Email</label>
+                                <input type="email" class="form-control" name='Email' 
+                                        placeholder="<%= user.email %>" style="width: 60%;">
+                              </div>
+                              <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify">Reset</button>
+                            </form>
+                        <% }else if (Msg === 'password') {%>
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Password</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
+                                            placeholder="Please enter your original passeord" style="width: 60%;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">New Password</label>
+                                    <input type="email" class="form-control" id="exampleInputPassword1" 
+                                            placeholder="Please enter your new passeord" style="width: 60%;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">New Password Cheak</label>
+                                    <input type="email" class="form-control" id="exampleInputPassword1" 
+                                            placeholder="Please enter your new passeord again" style="width: 60%;">
+                                </div>
 
-                </div>
-            <% } %>
+                                <br>
 
-            <!-- 密碼變更 -->
-            <% if (Msg === 'password') { %>
-                <div class="container" style="width: 80%; ">
-                    <h3>Hi! <%= user.username %> </h3>
-                    <% if (user.thumbnail) { %>
-                        <img src="<%= user.thumbnail %>"/>
+                                <h4 style="display:inline">Are you sure to modify your password ? </h4>
+                                <button type="submit" class="btn btn-danger" >Modify</button>
+                                
+                            </form>
+                        <% } %>
+
                     <% } %>
 
-                    <br><br>
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Password</label>
-                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
-                                    placeholder="Please enter your original passeord" style="width: 60%;">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">New Password</label>
-                            <input type="email" class="form-control" id="exampleInputPassword1" 
-                                    placeholder="Please enter your new passeord" style="width: 60%;">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">New Password Cheak</label>
-                            <input type="email" class="form-control" id="exampleInputPassword1" 
-                                    placeholder="Please enter your new passeord again" style="width: 60%;">
-                        </div>
-
-                        <br>
-
-                        <h4 style="display:inline">Are you sure to modify your password ? </h4>
-                        <button type="submit" class="btn btn-danger" >Modify</button>
-                        
-                    </form>
                 </div>
-                
-            <% } %>
 
-            <!-- 我的課程 動態生成-->
-            <% if (Msg === 'course') { %>
-                <div id='cardSection' class="container"></div>
-            <% } %>
-
+                <% if (Msg === 'course') {%>
+                    <div id='cardSection' class="container"></div>
+                <% } %>
+            
         </main>
 
     </body>
