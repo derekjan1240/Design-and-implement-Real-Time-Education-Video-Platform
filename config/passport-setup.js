@@ -25,7 +25,10 @@ passport.use('signin',
         
         (username, password, done) => {
 
-            User.findOne({ email: username }, function (err, user) {
+            User.findOne({ email: username },  (err, user) => {
+
+                // console.log('password:', password)
+                // console.log('user.password:', user.password)
                 
                 //比對加密密碼
                 let isValidPassword = function (user, password) {
@@ -88,7 +91,7 @@ passport.use(
         // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'https://600b8d5b.ngrok.io/auth/google/redirect'   //when use ngrok
+        callbackURL: 'https://2db55013.ngrok.io/auth/google/redirect'   //when use ngrok
         //callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
 
     }, (accessToken, refreshToken, profile, done) => {
@@ -207,11 +210,6 @@ passport.use('settingModify',
 
         (req, username, password, done) => {
 
-            //未驗證用戶
-            if(!req.user.active){
-                return done(null, false);
-            }
-
             //更改帳號資料
             User.findOne({email: password}).then((currentUser) => {
 
@@ -234,7 +232,7 @@ passport.use('settingModify',
                     
                     
                 }else{
-
+                    //更改帳號資料
                     User.findOne({email: req.user.email}).then((member) => {
                         member.username = username;
                         member.email =  password;
@@ -250,3 +248,35 @@ passport.use('settingModify',
             });
         }
 ));
+
+
+passport.use('passwordModify', 
+
+    new LocalStrategy( 
+
+         {  
+             usernameField: 'oldPassword',
+             passwordField: 'newPassword',
+             passReqToCallback: true
+         },
+
+        (req, username, password, done) => {
+            
+            //更改帳號資料
+            User.findOne({email: req.user.email}).then((member) => {
+
+                if(member){
+
+                    member.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+
+                    member.save().then((updateMember) => {
+                        done(null, updateMember);
+                    });
+       
+                }else{
+                    return done(null, false, { message: 'no user' });
+                }
+            });
+        }
+));
+

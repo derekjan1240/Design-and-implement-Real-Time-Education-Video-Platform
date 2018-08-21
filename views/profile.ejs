@@ -52,30 +52,31 @@
                                 <input type="email" class="form-control" name='Email' 
                                         placeholder="<%= user.email %>" style="width: 60%;">
                               </div>
+                              <h4><%=ErroMsg%></h4>
                               <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify">Reset</button>
                             </form>
                         <% }else if (Msg === 'password') {%>
-                            <form>
+                            <form enctype='application/json' method="POST">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Password</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
+                                    <input type="text" class="form-control" id="exampleInputPassword1" name='oldPassword' aria-describedby="emailHelp" 
                                             placeholder="Please enter your original passeord" style="width: 60%;">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">New Password</label>
-                                    <input type="email" class="form-control" id="exampleInputPassword1" 
+                                    <input type="text" class="form-control" id="exampleInputPassword2" name='newPassword'
                                             placeholder="Please enter your new passeord" style="width: 60%;">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">New Password Cheak</label>
-                                    <input type="email" class="form-control" id="exampleInputPassword1" 
+                                    <input type="text" class="form-control" id="exampleInputPassword3" name='newPasswordCheak'
                                             placeholder="Please enter your new passeord again" style="width: 60%;">
                                 </div>
 
                                 <br>
-
+                                <h4><%=ErroMsg%></h4>
                                 <h4 style="display:inline">Are you sure to modify your password ? </h4>
-                                <button type="submit" class="btn btn-danger" >Modify</button>
+                                <button type="submit" class="btn btn-danger" formaction="/profile/password/modify">Modify</button>
                                 
                             </form>
                         <% } %>
