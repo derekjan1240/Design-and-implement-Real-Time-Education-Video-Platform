@@ -45,7 +45,7 @@ router.get('/facebook', passport.authenticate('facebook'));
 // hand control to passport to use code to grab profile info
 router.get('/google/redirect', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
     // res.send(req.user);
-    res.redirect('/profile');
+    res.render('profile', { user: req.user, Msg:'profile', ErroMsg:'第一次登入預設密碼為 0000 '});
 });
 
 router.get('/twitter/redirect', passport.authenticate('twitter' ,{ failureRedirect: '/auth/login' }), (req, res) => {

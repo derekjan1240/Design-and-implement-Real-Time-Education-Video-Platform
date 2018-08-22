@@ -48,7 +48,7 @@ router.get('/:id/emailverify', authCheck, (req, res, next) => {
             currentUser.active = true;
             currentUser.save().then(() => {
                 console.log('email verify succese!');
-                res.render('profile', { user: currentUser ,Msg: 'Email verify succese!'});
+                res.render('profile', { user: currentUser , Msg:'profile', ErroMsg:'Email verify succese!'});
             });
         });
 	}	
