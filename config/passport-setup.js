@@ -91,7 +91,7 @@ passport.use(
         // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'https://2e052171.ngrok.io/auth/google/redirect'   //when use ngrok
+        callbackURL: 'https://de28128f.ngrok.io/auth/google/redirect'   //when use ngrok
         //callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
 
     }, (accessToken, refreshToken, profile, done) => {
@@ -102,7 +102,9 @@ passport.use(
         User.findOne({email: profile.emails[0].value}).then((currentUser) => {
             if(currentUser){
                 // already have this user
-                currentUser.username = profile.displayName;
+                if(!currentUser.username){
+                    currentUser.username = profile.displayName;
+                }
                 currentUser.googleId =  profile.id;
                 currentUser.thumbnail =  profile._json.image.url;
                 currentUser.active = true;

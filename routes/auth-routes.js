@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+const bcrypt = require('bcrypt-nodejs');
 
 // auth login
 router.get('/login', (req, res) => {
@@ -45,7 +46,12 @@ router.get('/facebook', passport.authenticate('facebook'));
 // hand control to passport to use code to grab profile info
 router.get('/google/redirect', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
     // res.send(req.user);
-    res.render('profile', { user: req.user, Msg:'profile', ErroMsg:'第一次登入預設密碼為 0000 '});
+    //user password cheak
+    if(bcrypt.compareSync('0000', req.user.password)){
+      res.render('profile', { user: req.user, Msg:'profile', ErroMsg:'預設密碼為 0000 請自行更改'});
+    }else{
+      res.render('profile', { user: req.user, Msg:'profile', ErroMsg:''});
+    }
 });
 
 router.get('/twitter/redirect', passport.authenticate('twitter' ,{ failureRedirect: '/auth/login' }), (req, res) => {
