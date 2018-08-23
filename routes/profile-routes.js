@@ -40,6 +40,11 @@ router.get('/course', activeCheck, (req, res) => {
     res.render('profile', { user: req.user , Msg:'course', ErroMsg:''});
 });
 
+router.get('/delete', activeCheck, (req, res) => {
+    //console.log('req',req.user,'\n');
+    res.render('profile', { user: req.user , Msg:'delete', ErroMsg:''});
+});
+
 //變更密碼
 router.post('/password/modify',activeCheck, (req, res, next) => {
 

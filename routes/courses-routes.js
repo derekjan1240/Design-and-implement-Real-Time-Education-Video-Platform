@@ -21,21 +21,19 @@ const activeCheck = (req, res, next) => {
 //免費影片
 router.get('/free/:courseType/:page', (req, res) => {
 
-	Course.find({courseType: req.params.courseType}).then((currentCourse) => {
+	Course.find({courseType: req.params.courseType, coursePay: "Free"}).then((currentCourse) => {
 
         if(currentCourse.length>0 && currentCourse.length >= (req.params.page-1)*6){
 
             if(isNaN(req.params.page)){
 				res.render('videopage', { 
 					user: req.user, 
-					Videopage: 'freevideos', 
 					page: 1,
 					courseList: currentCourse
 				});
 			}else{
 				res.render('videopage', { 
 					user: req.user, 
-					Videopage: 'freevideos', 
 					page: req.params.page,
 					courseList: currentCourse
 				});
@@ -51,21 +49,19 @@ router.get('/free/:courseType/:page', (req, res) => {
 //付費影片
 router.get('/pay/:courseType/:page', activeCheck, (req, res) => {
 	
-	Course.find({courseType: req.params.courseType}).then((currentCourse) => {
+	Course.find({courseType: req.params.courseType, coursePay: { $ne: "Free" }}).then((currentCourse) => {
 
         if(currentCourse.length>0 && currentCourse.length >= (req.params.page-1)*6){
 
             if(isNaN(req.params.page)){
 				res.render('videopage', { 
 					user: req.user, 
-					Videopage: 'freevideos', 
 					page: 1,
 					courseList: currentCourse
 				});
 			}else{
 				res.render('videopage', { 
 					user: req.user, 
-					Videopage: 'freevideos', 
 					page: req.params.page,
 					courseList: currentCourse
 				});

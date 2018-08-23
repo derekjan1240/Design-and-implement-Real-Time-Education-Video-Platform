@@ -78,6 +78,7 @@ router.post('/upload', function(req, res){
 
             }).save().then((newCourse) => {
                 console.log('> created new course: ', newCourse);
+                res.json(newCourse);
             });
         }
     });
