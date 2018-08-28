@@ -4,14 +4,52 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         <meta charset="utf-8">
         <title>Profile</title>
+
+        <style>
+
+            input{
+                display: block;
+                margin : 0 auto;
+            }
+
+            ul{
+                display:flex;
+                justify-content: center
+            }
+
+            #cardSection{
+                text-align: center;;
+            }
+
+            .card{
+                margin: 20px;
+                color: #DDDBF1;
+                background: #3C4F76;
+                padding: 10px;
+                border:2px #DDDBF1 solid;
+                border-radius:10px;
+
+            }
+
+            .card-body{
+                font-size: 20px;
+            }
+
+            .btn{
+                padding: 4px 10px;
+                margin-left: 5px;
+            }
+
+        </style>
+
     </head>
 
     <body onload='createCard()' style="background: #E1EFE6;">
         <% include header %>
 
-        <div class="container">
-            <!-- 課程分類導航 -->
-            <div>
+        <div id='navBar' style="padding: 20px;">
+            <div class="col-lg-8 col-lg-offset-2">       
+                <!-- 課程分類導航 -->               
                 <ul class="nav nav-pills">
                   <li class="nav-item">
                     <a class="nav-link" href="/profile/setting">Setting</a>
@@ -23,68 +61,76 @@
                     <a class="nav-link" href="/profile/course">Course</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link" href="/profile/shoppingCart">Shopping Cart</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link" href="/profile/delete">Delete</a>
                   </li>
-              </ul>
-            </div> 
+                </ul>  
+            </div>
         </div>
-        <br>
+            <br><br>
         <main>           
             <!-- 設定頁面 -->
             
                 <div class="container" style="width: 80%; ">
-                    <h3>Hi! <%= user.username %> </h3>
-                    <% if (user.thumbnail) { %>
-                        <img src="<%= user.thumbnail %>"/>
-                    <% } %>
-                    <% if (!user.active) { %>
-                        <h3 style="color: #E58F65;">Please verify your email! 😄</h3>
-                    <% }else{%>
+                    <div id = 'userInfo' style="text-align: center;">
+                        <h3>Hi! <%= user.username %> </h3>
+                        <% if (user.thumbnail) { %>
+                            <img src="<%= user.thumbnail %>"/>
+                        <% } %>
+                        <% if (!user.active) { %>
+                            <h3 style="color: #E58F65;">Please verify your email! 😄</h3>
+                        <% }else{%>
+                    </div>
                     
-                        <br><br>
+                    <br><br>
 
-                        <% if (Msg === 'setting' || Msg === 'profile') { %>
+                    <% if (Msg === 'setting' || Msg === 'profile') { %>
+                        <div class="col-lg-8 col-lg-offset-2">
                             <form enctype='application/json' method="POST">
                               <div class="form-group">
-                                <label for="exampleInputEmail1">Name</label>
+                                <label for="Name">Name</label>
                                 <input type="text" class="form-control" name='Name' aria-describedby="emailHelp" 
-                                        placeholder="<%= user.username %>" style="width: 60%;">
+                                        placeholder="<%= user.username %>"">
                               </div>
                               <div class="form-group">
-                                <label for="exampleInputPassword1">Email</label>
+                                <label for="Email">Email</label>
                                 <input type="email" class="form-control" name='Email' 
-                                        placeholder="<%= user.email %>" style="width: 60%;">
+                                        placeholder="<%= user.email %>"">
                               </div>
                               <h4><%=ErroMsg%></h4>
                               <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify">Reset</button>
                             </form>
-                        <% }else if (Msg === 'password') {%>
+                        </div>
+                    <% }else if (Msg === 'password') {%>
+                        <div class="col-lg-8 col-lg-offset-2">
                             <form enctype='application/json' method="POST">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Password</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1" name='oldPassword' aria-describedby="emailHelp" 
-                                            placeholder="Please enter your original passeord" style="width: 60%;">
+                                            placeholder="Please enter your original passeord"">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">New Password</label>
                                     <input type="text" class="form-control" id="exampleInputPassword2" name='newPassword'
-                                            placeholder="Please enter your new passeord" style="width: 60%;">
+                                            placeholder="Please enter your new passeord"">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">New Password Cheak</label>
                                     <input type="text" class="form-control" id="exampleInputPassword3" name='newPasswordCheak'
-                                            placeholder="Please enter your new passeord again" style="width: 60%;">
+                                            placeholder="Please enter your new passeord again">
                                 </div>
 
                                 <br>
                                 <h4><%=ErroMsg%></h4>
                                 <h4 style="display:inline">Are you sure to modify your password ? </h4>
-                                <button type="submit" class="btn btn-danger" formaction="/profile/password/modify">Modify</button>
-                                
+                                <button type="submit" class="btn btn-danger" formaction="/profile/password/modify">Modify</button>                              
                             </form>
-                        <% } %>
-
+                        </div>    
                     <% } %>
+
+                <% } %>
 
                 </div>
 
@@ -108,7 +154,7 @@
         <% for(let i=0; i<user.collectionCourse.length; i++){ %>
 
             container = document.createElement('div');
-            container.setAttribute("class", "col-sm-6" );
+            container.setAttribute("class", "col-sm-4" );
             cardSection.appendChild(container);
 
             card = document.createElement('div');
@@ -138,19 +184,3 @@
 
 </script>
 
-<style>
-
-    .card{
-        background: #ffe51ca8;
-        padding: 10px;
-        border:2px #ccc solid;
-        border-radius:10px;
-
-    }
-
-    .btn{
-        padding: 4px 10px;
-        margin-left: 5px;
-    }
-
-</style>

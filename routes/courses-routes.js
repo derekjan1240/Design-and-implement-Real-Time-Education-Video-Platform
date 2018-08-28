@@ -29,12 +29,14 @@ router.get('/free/:courseType/:page', (req, res) => {
 				res.render('videopage', { 
 					user: req.user, 
 					page: 1,
+					Msg: 'free',
 					courseList: currentCourse
 				});
 			}else{
 				res.render('videopage', { 
 					user: req.user, 
 					page: req.params.page,
+					Msg: 'free',
 					courseList: currentCourse
 				});
 			}
@@ -57,12 +59,14 @@ router.get('/pay/:courseType/:page', activeCheck, (req, res) => {
 				res.render('videopage', { 
 					user: req.user, 
 					page: 1,
+					Msg: 'pay',
 					courseList: currentCourse
 				});
 			}else{
 				res.render('videopage', { 
 					user: req.user, 
 					page: req.params.page,
+					Msg: 'pay',
 					courseList: currentCourse
 				});
 			}
@@ -75,6 +79,7 @@ router.get('/pay/:courseType/:page', activeCheck, (req, res) => {
 	
 });
 
+/* 收藏 */
 //會員管理課程(加入收藏)
 router.get('/collection/:courseName', authCheck, (req, res) => {
 
@@ -101,11 +106,50 @@ router.get('/uncollected/:courseName', authCheck, (req, res) => {
 	User.update(
 		{username: req.user.username},
 		{ $pull: {"collectionCourse" :req.params.courseName } },
-		function(err, result) {
+		(err, result) => {
 			if(err){
 				console.log(err);
 			}else{
 				res.redirect('/profile/course');
+			}
+		}
+	)
+
+});
+
+/* 購物車 */
+//會員管理課程(加入購物車)
+router.get('/addtocart/:courseName', authCheck, (req, res) => {
+
+	User.findOne({username: req.user.username}).then((currentUser) => {
+		//console.log('currentUser: ', currentUser);
+
+		if(currentUser.shoppingCartCourse.indexOf(req.params.courseName) >=0 ){
+			console.log(req.params.courseName, 'Course has been added to shopping cart!')
+		}else{
+			console.log(req.params.courseName, 'add success!')
+			currentUser.shoppingCartCourse.push(req.params.courseName);
+		}
+
+        currentUser.save().then((newUser) => {
+            //console.log('> user is: ', currentUser);
+            res.redirect('/profile/shoppingCart');
+        });
+    });
+
+});
+
+//會員管理課程(退出購物車)
+router.get('/removeformcart/:courseName', authCheck, (req, res) => {
+
+	User.update(
+		{username: req.user.username},
+		{ $pull: {"shoppingCartCourse" :req.params.courseName } },
+		(err, result) => {
+			if(err){
+				console.log(err);
+			}else{
+				res.redirect('/profile/shoppingCart');
 			}
 		}
 	)

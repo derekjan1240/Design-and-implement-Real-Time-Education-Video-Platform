@@ -91,8 +91,8 @@ passport.use(
         // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'https://de28128f.ngrok.io/auth/google/redirect'   //when use ngrok
-        //callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
+        callbackURL: 'https://21366f96.ngrok.io/auth/google/redirect'   //when use ngrok
+        // callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
 
     }, (accessToken, refreshToken, profile, done) => {
         

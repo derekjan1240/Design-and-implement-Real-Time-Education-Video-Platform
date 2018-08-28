@@ -3,9 +3,22 @@
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<style>
+		.card{
+			color: #39393A;
+			background: #E6E6E6;
+		}
+		.card-body{
+			padding: 10px;
+		}
 		.video{
 			width: 100%;
 		}
+		.btnDiv{
+			text-align: center;
+		}
+		.btn{
+        	margin-right: 5px;
+    	}
 	</style>
 	<title>Videos</title>
 </head>
@@ -175,52 +188,58 @@
 			cardE = document.getElementById("cardE"),
 			cardF = document.getElementById("cardF");
 
-			let cardName, paragram, link, msg;
-
-
 		//影片說明、路徑、名稱
+		let textOfCard;
 		<% let count = 0; %>
 		<% for(let i=(6*(page-1)+1); i<= courseList.length; i++){ %>
+
   			<% count++; %>
 
+  			//設定卡片內的文字
+  			<% if(Msg === 'free'){ %>
+			 	textOfCard = '<h4 style ="text-align: center;"><%= courseList[i-1].courseName %></h4>' +
+				        	'<li><%= courseList[i-1].courseAbout %></li>' + '<br>' + '<div class="btnDiv">' +
+				        	'<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a></div>';
+			<% }else if(Msg === 'pay'){ %>
+				textOfCard = '<h4 style ="text-align: center;"><%= courseList[i-1].courseName %></h4>' +
+    				  		'<li><%= courseList[i-1].courseAbout %></li>' +
+    				  		'<li>NT<%= courseList[i-1].coursePay %>$</li>' + '<br>' + '<div class="btnDiv">' +
+    				  		'<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>' +
+    				  		'<a href="/course/addtocart/<%= courseList[i-1].courseName %>" class="btn btn-success">Add to Cart</a></div>';
+			<%} %>	 
+
+			//innerHtml卡片內的文字
+  			//-----
   			<% if(i%6===1){ %>
-  				console.log('test',<%=i%>)
   				videoA.src = '/video/<%= courseList[i-1].courseName %>/1';	
-		        cardA.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				cardA.innerHTML = textOfCard;	    
   			<% } %>
-  			<% if(i%6===2){ %>
+  			//-----
+  			<%if(i%6===2){ %>
   				videoB.src = '/video/<%= courseList[i-1].courseName %>/1';
-  				cardB.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				cardB.innerHTML = textOfCard;
   			<% } %>
+  			//-----	
   			<% if(i%6===3){ %>
   				videoC.src = '/video/<%= courseList[i-1].courseName %>/1';
-  				cardC.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				cardC.innerHTML = textOfCard;
   			<% } %>
+  			//--
   			<% if(i%6===4){ %>
-  				videoD.src = 'http://127.0.0.1:3000/video/<%= courseList[i-1].courseName %>/1';
-  				cardD.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				videoD.src = '/video/<%= courseList[i-1].courseName %>/1';
+  				cardD.innerHTML = textOfCard;
   			<% } %>
+  			//--
   			<% if(i%6===5){ %>
   				videoE.src = '/video/<%= courseList[i-1].courseName %>/1';
-  				cardE.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				cardE.innerHTML = textOfCard;
   			<% } %>
+  			//--
   			<% if(i%6===0){ %>
   				videoF.src = '/video/<%= courseList[i-1].courseName %>/1';
-  				cardF.innerHTML = '<h5 class="card-title"><%= courseList[i-1].courseName %></h5>' +
-		        				  '<p class="card-text"><%= courseList[i-1].courseAbout %></h5>' +
-		        				  '<br>' + '<br>'  + '<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>'
+  				cardF.innerHTML = textOfCard;
   			<% } %>
-
+  			//--
   			<% if(count>=6){ %>
   				<% break; %>
   			<% } %>
