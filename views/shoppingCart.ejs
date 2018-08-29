@@ -15,6 +15,10 @@
                 justify-content: center
             }
 
+            #footer{
+                height: 50px;
+            }
+
             .card{
                 margin: 20px;
                 color: #DDDBF1;
@@ -39,9 +43,10 @@
     </head>
     <body onload='createCard()'>
         <% include header %>
+
+        <!-- 分類導航 -->  
         <div id='navBar' style="padding: 20px;">
-            <div class="col-lg-8 col-lg-offset-2">       
-                <!-- 課程分類導航 -->               
+            <div class="col-lg-8 col-lg-offset-2">                             
                 <ul class="nav nav-pills">
                   <li class="nav-item">
                     <a class="nav-link" href="/profile/setting">Setting</a>
@@ -61,9 +66,10 @@
                 </ul>  
             </div>
         </div>
-            <br><br>
+
+        <br><br>
+
         <main>
-            
                 <form  enctype='application/json' method="POST">
                     <div id="cardSection" class="container" style="text-align: center;">
                         
@@ -73,10 +79,11 @@
                         <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify" style="">Cheak</button>
                     </div>
                 </form>
-            
-            
-
         </main>
+
+        <div id="footer">
+            
+        </div>
     </body>
 </html>
 
@@ -100,16 +107,17 @@
             cardbody.setAttribute("class", "card-body" );
             card.appendChild(cardbody);
 
-            cardbody.innerHTML = '<input type="checkbox" name="itemA" value="itemA" checked="checked">&nbsp;<%= user.shoppingCartCourse[i] %><br><br>';
+            cardbody.innerHTML ='<input type="checkbox" name="itemA" value="itemA" checked="checked">&nbsp;' +
+                                    '<%= user.shoppingCartCourse[i].courseName %> <br><br> NT<%= user.shoppingCartCourse[i].coursePay %>$<br><br>';
 
             linkGo = document.createElement('a');
-            linkGo.setAttribute("href", "/course/<%= user.shoppingCartCourse[i] %>/1" );
+            linkGo.setAttribute("href", "/course/<%= user.shoppingCartCourse[i].courseName %>/1" );
             linkGo.setAttribute("class", "btn btn-primary" );
             linkGo.innerHTML='Go';
             card.appendChild(linkGo);   
 
             linkDelete = document.createElement('a');
-            linkDelete.setAttribute("href", "/course/uncollected/<%= user.shoppingCartCourse[i] %>" );
+            linkDelete.setAttribute("href", "/course/removeformcart/<%= user.shoppingCartCourse[i].courseName %>" );
             linkDelete.setAttribute("class", "btn btn-danger" );
             linkDelete.innerHTML='Delete';
             card.appendChild(linkDelete); 

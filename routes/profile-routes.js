@@ -13,43 +13,47 @@ const authCheck = (req, res, next) => {
 
 //激活中介
 const activeCheck = (req, res, next) => {
-    if(!req.user.active){
-        res.redirect('/profile');
+    if(!req.user){
+        res.redirect('/auth/login');
     } else {
-        next();
+        if(!req.user.active){
+            res.redirect('/profile');
+        } else {
+           next();
+        }
     }
+    
 };
 
+
+/*基本頁面路由*/
 router.get('/', authCheck, (req, res) => {
-	//console.log('req',req.user,'\n');
     res.render('profile', { user: req.user , Msg:'profile', ErroMsg:''});
 });
 
 router.get('/setting', activeCheck, (req, res) => {
-	//console.log('req',req.user,'\n');
     res.render('profile', { user: req.user , Msg:'setting', ErroMsg:''});
 });
 
 router.get('/password', activeCheck, (req, res) => {
-	//console.log('req',req.user,'\n');
     res.render('profile', { user: req.user , Msg:'password', ErroMsg:''});
 });
 
 router.get('/course', activeCheck, (req, res) => {
-	//console.log('req',req.user,'\n');
     res.render('profile', { user: req.user , Msg:'course', ErroMsg:''});
 });
 
 router.get('/shoppingCart', activeCheck, (req, res) => {
-    //console.log('req',req.user,'\n');
     res.render('shoppingCart', { user: req.user , Msg:'', ErroMsg:''});
 });
 
 router.get('/delete', activeCheck, (req, res) => {
-    //console.log('req',req.user,'\n');
     res.render('profile', { user: req.user , Msg:'delete', ErroMsg:''});
 });
 
+
+
+/*會員更正路由*/
 //變更密碼
 router.post('/password/modify',activeCheck, (req, res, next) => {
 
@@ -77,7 +81,7 @@ router.post('/password/modify',activeCheck, (req, res, next) => {
     })
 );
 
-//變更帳號名稱&信箱
+//變更帳號名稱 or 信箱
 router.post('/setting/modify',activeCheck, (req, res, next) => {
 
     //console.log('cheaking ...');

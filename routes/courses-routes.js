@@ -121,21 +121,49 @@ router.get('/uncollected/:courseName', authCheck, (req, res) => {
 //會員管理課程(加入購物車)
 router.get('/addtocart/:courseName', authCheck, (req, res) => {
 
-	User.findOne({username: req.user.username}).then((currentUser) => {
-		//console.log('currentUser: ', currentUser);
+	let _courseName,
+		_coursePrice;
 
-		if(currentUser.shoppingCartCourse.indexOf(req.params.courseName) >=0 ){
-			console.log(req.params.courseName, 'Course has been added to shopping cart!')
-		}else{
-			console.log(req.params.courseName, 'add success!')
-			currentUser.shoppingCartCourse.push(req.params.courseName);
-		}
+	let promise = new Promise((resolve, reject) => {
 
-        currentUser.save().then((newUser) => {
-            //console.log('> user is: ', currentUser);
-            res.redirect('/profile/shoppingCart');
-        });
-    });
+		Course.findOne({courseName: req.params.courseName}).then((currentCourse)=>{
+			if(currentCourse){
+
+				_courseName = currentCourse.courseName;
+				_coursePrice = currentCourse.coursePay;
+				console.log('_courseName  2: ',_courseName);
+				console.log('_coursePrice 2: ',_coursePrice);
+
+				resolve(currentCourse);
+			}else{
+				//無此商品課程
+				reject("無此商品課程");
+			}		
+		});
+
+      }).then((currentCourse) => {
+      	console.log(currentCourse);
+
+      	User.findOne({username: req.user.username}).then((currentUser) => {
+
+			if(currentUser.shoppingCartCourse.indexOf(req.params.courseName) >=0 ){
+				console.log(req.params.courseName, 'Course has been added to shopping cart!')
+			}else{
+				//將課程加入會員購物車db
+				currentUser.shoppingCartCourse.push(currentCourse);
+			}
+
+	        currentUser.save().then((newUser) => {
+	            console.log(req.params.courseName, 'add success!')
+	            res.redirect('/profile/shoppingCart');
+	        });
+	    });
+
+      }, (reason) => {
+        //erro handling
+        console.log(reason);
+        res.redirect('/course/pay/CS/1');
+      });
 
 });
 
@@ -144,7 +172,7 @@ router.get('/removeformcart/:courseName', authCheck, (req, res) => {
 
 	User.update(
 		{username: req.user.username},
-		{ $pull: {"shoppingCartCourse" :req.params.courseName } },
+		{ $pull: {"shoppingCartCourse" : { "courseName": req.params.courseName }  } },
 		(err, result) => {
 			if(err){
 				console.log(err);
