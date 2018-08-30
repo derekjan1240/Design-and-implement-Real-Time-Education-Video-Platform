@@ -7,7 +7,6 @@ const userSchema = new Schema({
     password: String,
     collectionCourse: [String],
     shoppingCartCourse: [{}],
-    shoppingCartPrice: [String],
     googleId: String,
     twitterId: String,
     thumbnail: String,

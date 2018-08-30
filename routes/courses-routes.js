@@ -147,15 +147,15 @@ router.get('/addtocart/:courseName', authCheck, (req, res) => {
       	User.findOne({username: req.user.username}).then((currentUser) => {
 
 			if(currentUser.shoppingCartCourse.indexOf(req.params.courseName) >=0 ){
-				console.log(req.params.courseName, 'Course has been added to shopping cart!')
+				//console.log(req.params.courseName, 'Course has been added to shopping cart!')
 			}else{
 				//將課程加入會員購物車db
 				currentUser.shoppingCartCourse.push(currentCourse);
 			}
 
 	        currentUser.save().then((newUser) => {
-	            console.log(req.params.courseName, 'add success!')
-	            res.redirect('/profile/shoppingCart');
+	            //console.log(req.params.courseName, 'add success!')
+	            res.redirect('back');
 	        });
 	    });
 
@@ -200,11 +200,9 @@ router.get('/:courseName/:courseId', (req, res) => {
         if(currentCourse){
 
             res.render('coursepage', { 
-				user: req.user, 
-				courseName: currentCourse.courseName,
-				courseAbout: currentCourse.courseAbout,
-				courseId: req.params.courseId,
-				courseEp: currentCourse.courseTotalEp
+				user: req.user,
+				course: currentCourse,
+				courseId: req.params.courseId
 			});
 
         }else{

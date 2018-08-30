@@ -15,7 +15,13 @@
       <li><a href="/course/pay/CS/1">Pay</a></li>
       <li><a href="/postpage">Upload</a></li>
       <li><a href="/profile">Account</a></li>
-      <li><a href="/profile/shoppingCart">Shopping Cart<span class="badge">0</span></a></li>
+      <li>
+        <a href="/profile/shoppingCart">Shopping Cart
+          <% if (user) { %> 
+            <span class="badge"><%=user.shoppingCartCourse.length%></span>
+          <% } %>
+        </a>
+      </li>
     </ul>
     <form class="navbar-form navbar-left" action="/action_page.php">
       <div class="form-group">

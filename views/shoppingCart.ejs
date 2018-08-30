@@ -76,6 +76,7 @@
                     </div>
                     <br>
                     <div class="container" style="text-align: center;">
+                        <h4 id = "totalPrice">NT 0$</h4><br>
                         <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify" style="">Cheak</button>
                     </div>
                 </form>
@@ -90,9 +91,16 @@
 
 <script type="text/javascript">
 
-    let cardSection = document.getElementById('cardSection');
+    setInterval(()=> {
+         calculatePrice(); 
+    }, 500);
     
     function createCard(){
+
+        let cardSection = document.getElementById('cardSection');
+        let totalPrice = document.getElementById('totalPrice');
+        let price = 0;
+
         <% for(let i=0; i<user.shoppingCartCourse.length; i++){ %>
 
             container = document.createElement('div');
@@ -107,7 +115,7 @@
             cardbody.setAttribute("class", "card-body" );
             card.appendChild(cardbody);
 
-            cardbody.innerHTML ='<input type="checkbox" name="itemA" value="itemA" checked="checked">&nbsp;' +
+            cardbody.innerHTML ='<input id="item<%=i%>" type="checkbox" name="item<%=i%>" value="<%= user.shoppingCartCourse[i].coursePay %>" checked="checked">&nbsp;' +
                                     '<%= user.shoppingCartCourse[i].courseName %> <br><br> NT<%= user.shoppingCartCourse[i].coursePay %>$<br><br>';
 
             linkGo = document.createElement('a');
@@ -121,8 +129,31 @@
             linkDelete.setAttribute("class", "btn btn-danger" );
             linkDelete.innerHTML='Delete';
             card.appendChild(linkDelete); 
+
+            price += Number(<%= user.shoppingCartCourse[i].coursePay %>);
             
         <% } %>
+
+        totalPrice.innerHTML = 'NT ' + price.toString() + '$';
+    }
+
+    function calculatePrice(){
+
+        let price = 0;
+        let tem;
+        
+        <% for(let i=0; i<user.shoppingCartCourse.length; i++){ %>
+            
+            tem = document.getElementById('item<%=i%>');
+            
+            if(tem.checked === true){
+                price+=Number(tem.value);
+            }
+
+        <% } %>
+
+        let totalPrice = document.getElementById('totalPrice');
+        totalPrice.innerHTML = 'NT ' + price.toString() + '$';
     }
 
 </script>

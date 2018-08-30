@@ -7,26 +7,33 @@
     </head>
 
     <body onload="createList()" style="background: #E1EFE6;">
-        <% include header %>
-        
+        <% include header %>s
+
         <!-- 影片標題 -->
         <div class="container" style="padding-left: 50px; width: 100%; "> 
           <div id ='courseTitle' class="col-sm-10" style="width: 100%; padding-bottom: 20px; color: #191919">
-            <h2><b> <%= courseName %> </b></h2>  
-            <h4> Teacher: <%= courseAbout %> </h4>
-            <h4> Introduction: <%= courseAbout %> </h4> 
+            <h2><b> <%= course.courseName %> </b></h2>  
+            <h4> Teacher: <%= course.courseAbout %> </h4>
+            <h4> Introduction: <%= course.courseAbout %> </h4>
+            <% if( course.coursePay != "Free"){ %>
+              <h4> Price: <%= course.coursePay%> NT$</h4>
+            <% } %>
             <br>
-            <button class='personalBtn' onclick= "location.href ='/course/collection/<%= courseName %>' ">Collection </button>
-            <button class='personalBtn' onclick= "location.href ='#' ">Button </button>
-            <!-- <button class='personalBtn' onclick="location.href ='/share/<%= courseName %>' ">share </button> -->
+
+            <button class='personalBtn' onclick= "location.href ='/course/collection/<%= course.courseName %>' ">Collection </button>
+            <% if( course.coursePay != "Free"){ %>
+              <button id='addTOCartBtn' class='personalBtn' onclick= "location.href ='/course/addtocart/<%= course.courseName %>' ">Add to cart</button>
+            <% } %>
+            
+
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <div class="fb-share-button" 
-              data-href="/course/<%= courseName %>/1" 
+              data-href="/course/<%= course.courseName %>/1" 
               data-layout="button"
               size='large'>
             </div>
             &nbsp&nbsp&nbsp
-            <div class="line-it-button" data-lang="zh_Hant" data-type="share-a" data-url="/course/<%=courseName%>/1"  
+            <div class="line-it-button" data-lang="zh_Hant" data-type="share-a" data-url="/course/<%=course.courseName%>/1"  
                style="display: none;"></div>
             </div>  
         </div>
@@ -38,7 +45,7 @@
           </div>    
           <div id="video" class="col-sm-6">
             <video class="video" id="videoPlayer" controls controlsList="nodownload" style="height: 100%;">
-              <source src='/video/<%= courseName %>/<%= courseId %>' type="video/mp4">
+              <source src='/video/<%= course.courseName %>/<%= courseId %>' type="video/mp4">
             </video>
           </div>    
         </div> 
@@ -88,6 +95,10 @@
     text-align: center;
     font-size: 16px;
     transition-duration: 0.4s;
+  }
+
+  #addTOCartBtn{
+    background-color: #449d44;
   }
 
   .personalBtn{
@@ -148,7 +159,7 @@
 
     episodeList.appendChild(ul);
 
-    for (var i=1; i<=<%= courseEp %>; i++){
+    for (var i=1; i<=<%= course.courseTotalEp %>; i++){
 
       let li = document.createElement('li');
       li.setAttribute("class", "course_li" );
@@ -159,7 +170,7 @@
       li.appendChild(btn);
 
       let alink = document.createElement("a");
-      alink.setAttribute("href", '/course/<%= courseName %>/'+ i.toString());
+      alink.setAttribute("href", '/course/<%= course.courseName %>/'+ i.toString());
       alink.innerHTML = 'Course Ep' + i.toString();
       btn.appendChild(alink);
 
