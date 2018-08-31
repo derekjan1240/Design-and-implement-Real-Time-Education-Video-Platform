@@ -10,12 +10,19 @@ const authCheck = (req, res, next) => {
     }
 };
 
+
+//激活中介
 const activeCheck = (req, res, next) => {
-    if(!req.user.active){
-        res.redirect('/course/free/CS/1');
+    if(!req.user){
+        res.redirect('/auth/login');
     } else {
-        next();
+        if(!req.user.active){
+            res.redirect('/course/free/CS/1');
+        } else {
+           next();
+        }
     }
+    
 };
 
 //免費影片
@@ -147,6 +154,7 @@ router.get('/addtocart/:courseName', authCheck, (req, res) => {
       	User.findOne({username: req.user.username}).then((currentUser) => {
 
 			if(currentUser.shoppingCartCourse.indexOf(req.params.courseName) >=0 ){
+				//已有此商品
 				//console.log(req.params.courseName, 'Course has been added to shopping cart!')
 			}else{
 				//將課程加入會員購物車db

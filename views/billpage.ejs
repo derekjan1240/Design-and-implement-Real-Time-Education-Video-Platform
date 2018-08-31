@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <title>user bill</title>
+        <style>
+
+            body{
+                background: #E1EFE6;
+            }
+
+            .textnode{
+                font-size: 25px;
+            }
+
+            #billSection{
+                text-align: center;
+                padding: 50px;
+                background: white;
+            }
+
+            #infoSection{
+                padding: 20px;
+            }
+
+            #footer{
+                height: 50px;
+            }
+
+
+
+        </style>
+
+    </head>
+    <body onload="creatDiv()">
+        <% include header %>
+
+        <%= erroMsg %>
+
+        <main>
+            <div id="billSection">
+                <h1>BILL INFO</h1><br><br>
+
+                <h4>Bill ID: <%= bill._id %></h4>
+                <h4>Customer Account: <%= bill.hostMember %></h4>
+                <div id="infoSection">
+                    
+                </div>
+                <br><br><br>
+                <hr>
+                <h4>Total: <%= bill.totalPrice %>NT$</h4>
+                <hr>
+                <button type="button" class="btn btn-primary">OK</button>
+            </div>
+        </main>
+
+        <div id="footer">
+            
+        </div>
+    </body>
+</html>
+
+
+<script type="text/javascript">
+
+    let infoSection = document.getElementById('infoSection');
+
+    function creatDiv(){
+
+        
+        <% for(var i=0; i<bill.itemList.length; i+=2){  %>
+
+            container = document.createElement('div');
+            container.setAttribute("class", "col-sm-12" );
+            infoSection.appendChild(container);
+
+            newdiv = document.createElement('div');
+            newdiv.setAttribute("class", "textnode" );
+            container.appendChild(newdiv);
+
+            newdiv.innerHTML ='<li class="textnode"><%= bill.itemList[i+1] %> &nbsp;&nbsp; <%= bill.itemList[i] %>NT$</li>';
+            
+
+        <% } %>
+
+    }
+
+</script>

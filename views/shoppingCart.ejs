@@ -74,10 +74,11 @@
                     <div id="cardSection" class="container" style="text-align: center;">
                         
                     </div>
+                    <input id="priceOfInput" type="text" name="totalPrice" value="0" style="display:none">
                     <br>
                     <div class="container" style="text-align: center;">
-                        <h4 id = "totalPrice">NT 0$</h4><br>
-                        <button type="submit" class="btn btn-primary" formaction="/profile/setting/modify" style="">Cheak</button>
+                        <h4 id="totalPrice" >NT 0$</h4><br>
+                        <button type="submit" class="btn btn-primary" formaction="/user/<%= user._id %>/checkbill" style="">Cheak</button>
                     </div>
                 </form>
         </main>
@@ -93,7 +94,7 @@
 
     setInterval(()=> {
          calculatePrice(); 
-    }, 500);
+    }, 300);
     
     function createCard(){
 
@@ -115,8 +116,9 @@
             cardbody.setAttribute("class", "card-body" );
             card.appendChild(cardbody);
 
-            cardbody.innerHTML ='<input id="item<%=i%>" type="checkbox" name="item<%=i%>" value="<%= user.shoppingCartCourse[i].coursePay %>" checked="checked">&nbsp;' +
-                                    '<%= user.shoppingCartCourse[i].courseName %> <br><br> NT<%= user.shoppingCartCourse[i].coursePay %>$<br><br>';
+            cardbody.innerHTML ='<input id="item<%=i%>" type="checkbox" name="item" value="<%= user.shoppingCartCourse[i].coursePay %>" checked="checked"> &nbsp;' +
+                                    '<%= user.shoppingCartCourse[i].courseName %> <br><br> NT<%= user.shoppingCartCourse[i].coursePay %>$<br><br>' +
+                                    '<input id="item<%=i%>_name" type="checkbox" name="item" value="<%= user.shoppingCartCourse[i].courseName %>" checked="checked" style="display:none">';
 
             linkGo = document.createElement('a');
             linkGo.setAttribute("href", "/course/<%= user.shoppingCartCourse[i].courseName %>/1" );
@@ -140,20 +142,26 @@
     function calculatePrice(){
 
         let price = 0;
-        let tem;
+        let tema, temb;
         
         <% for(let i=0; i<user.shoppingCartCourse.length; i++){ %>
             
-            tem = document.getElementById('item<%=i%>');
+            tema = document.getElementById('item<%=i%>');
+            temb = document.getElementById('item<%=i%>_name');
             
-            if(tem.checked === true){
-                price+=Number(tem.value);
+            if(tema.checked === true){
+                price+=Number(tema.value);
+                temb.checked = true;
+            }else{
+                temb.checked = false;
             }
 
         <% } %>
 
         let totalPrice = document.getElementById('totalPrice');
         totalPrice.innerHTML = 'NT ' + price.toString() + '$';
+        let priceOfInput = document.getElementById('priceOfInput');
+        priceOfInput.value = price;
     }
 
 </script>
