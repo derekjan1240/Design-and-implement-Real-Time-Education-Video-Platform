@@ -193,19 +193,20 @@
 		<% let count = 0; %>
 		<% for(let i=(6*(page-1)+1); i<= courseList.length; i++){ %>
 
-  			<% count++; %>
+  			<% count++; %>                   
 
   			//設定卡片內的文字
   			<% if(Msg === 'free'){ %>
 			 	textOfCard = '<h4 style ="text-align: center;"><%= courseList[i-1].courseName %></h4>' +
 				        	'<li><%= courseList[i-1].courseAbout %></li>' + '<br>' + '<div class="btnDiv">' +
-				        	'<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a></div>';
+				        	'<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>' +
+				        	'<a href="/course/collection/<%= courseList[i-1].courseName %>" class="btn btn-warning">Collection</a></div>';
 			<% }else if(Msg === 'pay'){ %>
 				textOfCard = '<h4 style ="text-align: center;"><%= courseList[i-1].courseName %></h4>' +
     				  		'<li><%= courseList[i-1].courseAbout %></li>' +
     				  		'<li>NT<%= courseList[i-1].coursePay %>$</li>' + '<br>' + '<div class="btnDiv">' +
-    				  		'<a href="/course/<%= courseList[i-1].courseName %>/1" class="btn btn-primary">View Course</a>' +
-    				  		'<a href="/course/addtocart/<%= courseList[i-1].courseName %>" class="btn btn-success">Add to Cart</a></div>';
+    				  		'<a href="/course/addtocart/<%= courseList[i-1].courseName %>" class="btn btn-success">Add to Cart</a>' +
+    				  		'<a href="/course/collection/<%= courseList[i-1].courseName %>" class="btn btn-warning">Collection</a></div>';;
 			<%} %>	 
 
 			//innerHtml卡片內的文字

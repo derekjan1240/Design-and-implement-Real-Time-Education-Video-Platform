@@ -58,13 +58,13 @@
                     <a class="nav-link" href="/profile/password">Password</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/profile/course">Course</a>
+                    <a class="nav-link" href="/profile/collect">Collect</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/profile/shoppingCart">Shopping Cart</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/profile/delete">Delete</a>
+                    <a class="nav-link" href="/profile/course">Course</a>
                   </li>
                 </ul>  
             </div>
@@ -134,8 +134,12 @@
 
                 </div>
 
-                <% if (Msg === 'course') {%>
+                <% if (Msg === 'collect') {%>
                     <div id='cardSection' class="container"></div>
+                <% } %>
+
+                <% if (Msg === 'course') {%>
+                    <div id='ownedCourseSection' class="container"></div>
                 <% } %>
             
         </main>
@@ -149,37 +153,71 @@
 <script type="text/javascript">
 
     let cardSection = document.getElementById('cardSection');
+    let ownedCourseSection = document.getElementById('ownedCourseSection');
     
     function createCard(){
-        <% for(let i=0; i<user.collectionCourse.length; i++){ %>
 
-            container = document.createElement('div');
-            container.setAttribute("class", "col-sm-4" );
-            cardSection.appendChild(container);
+        <% if (Msg === 'collect') { %>
 
-            card = document.createElement('div');
-            card.setAttribute("class", "card" );
-            container.appendChild(card);
+            <% for(let i=0; i<user.collectionCourse.length; i++){ %>
 
-            cardbody = document.createElement('div');
-            cardbody.setAttribute("class", "card-body" );
-            card.appendChild(cardbody);
+                container = document.createElement('div');
+                container.setAttribute("class", "col-sm-4" );
+                cardSection.appendChild(container);
 
-            cardbody.innerHTML = '<h4 class="card-title"><%= user.collectionCourse[i] %></h4>';
+                card = document.createElement('div');
+                card.setAttribute("class", "card" );
+                container.appendChild(card);
 
-            link = document.createElement('a');
-            link.setAttribute("href", "/course/<%= user.collectionCourse[i] %>/1" );
-            link.setAttribute("class", "btn btn-primary" );
-            link.innerHTML='Go';
-            card.appendChild(link);   
+                cardbody = document.createElement('div');
+                cardbody.setAttribute("class", "card-body" );
+                card.appendChild(cardbody);
 
-            link = document.createElement('a');
-            link.setAttribute("href", "/course/uncollected/<%= user.collectionCourse[i] %>" );
-            link.setAttribute("class", "btn btn-danger" );
-            link.innerHTML='Delete';
-            card.appendChild(link); 
-            
-        <% } %>
+                cardbody.innerHTML = '<h4 class="card-title"><%= user.collectionCourse[i] %></h4>';
+
+                link = document.createElement('a');
+                link.setAttribute("href", "/course/<%= user.collectionCourse[i] %>/1" );
+                link.setAttribute("class", "btn btn-primary" );
+                link.innerHTML='Go';
+                card.appendChild(link);   
+
+                link = document.createElement('a');
+                link.setAttribute("href", "/course/uncollected/<%= user.collectionCourse[i] %>" );
+                link.setAttribute("class", "btn btn-danger" );
+                link.innerHTML='Delete';
+                card.appendChild(link); 
+                
+            <% } %>
+
+         <% }else if (Msg === 'course') { %>
+
+            <% for(let i=0; i<user.ownedCourse.length; i++){ %>
+
+                container = document.createElement('div');
+                container.setAttribute("class", "col-sm-4" );
+                ownedCourseSection.appendChild(container);
+
+                card = document.createElement('div');
+                card.setAttribute("class", "card" );
+                container.appendChild(card);
+
+                cardbody = document.createElement('div');
+                cardbody.setAttribute("class", "card-body" );
+                card.appendChild(cardbody);
+
+                cardbody.innerHTML = '<h4 class="card-title"><%= user.ownedCourse[i] %></h4>';
+
+                link = document.createElement('a');
+                link.setAttribute("href", "/course/<%= user.ownedCourse[i] %>/1" );
+                link.setAttribute("class", "btn btn-success" );
+                link.innerHTML='Go';
+                card.appendChild(link);   
+                
+            <% } %>
+
+        <% }%>
+
+
     }
 
 </script>

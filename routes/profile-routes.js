@@ -39,16 +39,16 @@ router.get('/password', activeCheck, (req, res) => {
     res.render('profile', { user: req.user , Msg:'password', ErroMsg:''});
 });
 
-router.get('/course', activeCheck, (req, res) => {
-    res.render('profile', { user: req.user , Msg:'course', ErroMsg:''});
+router.get('/collect', activeCheck, (req, res) => {
+    res.render('profile', { user: req.user , Msg:'collect', ErroMsg:''});
 });
 
 router.get('/shoppingCart', activeCheck, (req, res) => {
     res.render('shoppingCart', { user: req.user , Msg:'', ErroMsg:''});
 });
 
-router.get('/delete', activeCheck, (req, res) => {
-    res.render('profile', { user: req.user , Msg:'delete', ErroMsg:''});
+router.get('/course', activeCheck, (req, res) => {
+    res.render('profile', { user: req.user , Msg:'course', ErroMsg:''});
 });
 
 

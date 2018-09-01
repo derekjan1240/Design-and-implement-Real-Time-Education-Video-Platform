@@ -25,6 +25,8 @@ const activeCheck = (req, res, next) => {
     
 };
 
+
+/* 總覽頁面 */
 //免費影片
 router.get('/free/:courseType/:page', (req, res) => {
 
@@ -94,14 +96,15 @@ router.get('/collection/:courseName', authCheck, (req, res) => {
 		//console.log('currentUser: ', currentUser);
 
 		if(currentUser.collectionCourse.indexOf(req.params.courseName) >=0 ){
-			console.log(req.params.courseName, 'Course has been added!')
+			console.log(req.params.courseName, 'Course has been added in collection!');
+			res.redirect('/profile/collect');
 		}else{
 			currentUser.collectionCourse.push(req.params.courseName);
 		}
 
         currentUser.save().then((newUser) => {
             //console.log('> user is: ', currentUser);
-            res.redirect('/profile/course');
+            res.redirect('back');
         });
     });
 
@@ -117,7 +120,7 @@ router.get('/uncollected/:courseName', authCheck, (req, res) => {
 			if(err){
 				console.log(err);
 			}else{
-				res.redirect('/profile/course');
+				res.redirect('/profile/collect');
 			}
 		}
 	)
@@ -133,23 +136,35 @@ router.get('/addtocart/:courseName', authCheck, (req, res) => {
 
 	let promise = new Promise((resolve, reject) => {
 
+		//判斷課程是否已擁有
+		if( req.user.ownedCourse.indexOf(req.params.courseName)>=0 ){
+			reject("Course has been owned!");
+		}
+		//判斷課程是否已在購物車
+		for(var i=0;i<req.user.shoppingCartCourse.length;i++){
+
+			if( req.user.shoppingCartCourse[i].courseName.indexOf(req.params.courseName)>=0 ){
+				reject("Course has been added in shoppingCart!");
+			}
+		}
+
 		Course.findOne({courseName: req.params.courseName}).then((currentCourse)=>{
 			if(currentCourse){
 
 				_courseName = currentCourse.courseName;
 				_coursePrice = currentCourse.coursePay;
-				console.log('_courseName  2: ',_courseName);
-				console.log('_coursePrice 2: ',_coursePrice);
+				// console.log('_courseName  2: ',_courseName);
+				// console.log('_coursePrice 2: ',_coursePrice);
 
 				resolve(currentCourse);
 			}else{
 				//無此商品課程
-				reject("無此商品課程");
+				reject("course no find");
 			}		
 		});
 
       }).then((currentCourse) => {
-      	console.log(currentCourse);
+      	// console.log(currentCourse);
 
       	User.findOne({username: req.user.username}).then((currentUser) => {
 
@@ -170,7 +185,12 @@ router.get('/addtocart/:courseName', authCheck, (req, res) => {
       }, (reason) => {
         //erro handling
         console.log(reason);
-        res.redirect('/course/pay/CS/1');
+        if(reason === 'Course has been owned!'){
+        	res.redirect('/profile/course');
+        }else{
+        	res.redirect('/profile/shoppingCart');
+        }
+        
       });
 
 });
@@ -193,28 +213,26 @@ router.get('/removeformcart/:courseName', authCheck, (req, res) => {
 });
 
 
-//保留按鍵路由
-router.get('/start/:courseName', authCheck, (req, res) => {
-	
-    res.render('profile', { user: req.user , Msg:' '});
-});
-
-
 //課程頁面
 router.get('/:courseName/:courseId', (req, res) => {
 
 	Course.findOne({courseName: req.params.courseName}).then((currentCourse) => {
 
         if(currentCourse){
-
-            res.render('coursepage', { 
-				user: req.user,
-				course: currentCourse,
-				courseId: req.params.courseId
-			});
+        	//為免費課程或是已購買的課程
+        	if(currentCourse.coursePay === 'Free' || req.user.ownedCourse.indexOf(currentCourse.courseName)>=0){
+				res.render('coursepage', { 
+					user: req.user,
+					course: currentCourse,
+					courseId: req.params.courseId
+				});
+        	}else{
+        		//為尚未購買的付費課程
+        		res.redirect('back');
+        	}
 
         }else{
-            res.redirect('/');
+            res.redirect('/profile');
         }
     });
 });

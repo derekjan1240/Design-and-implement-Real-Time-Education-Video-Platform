@@ -7,7 +7,7 @@
     </head>
 
     <body onload="createList()" style="background: #E1EFE6;">
-        <% include header %>s
+        <% include header %>
 
         <!-- 影片標題 -->
         <div class="container" style="padding-left: 50px; width: 100%; "> 
@@ -15,15 +15,15 @@
             <h2><b> <%= course.courseName %> </b></h2>  
             <h4> Teacher: <%= course.courseAbout %> </h4>
             <h4> Introduction: <%= course.courseAbout %> </h4>
-            <% if( course.coursePay != "Free"){ %>
+            <!-- <% if( course.coursePay != "Free"){ %>
               <h4> Price: <%= course.coursePay%> NT$</h4>
-            <% } %>
+            <% } %> -->
             <br>
 
             <button class='personalBtn' onclick= "location.href ='/course/collection/<%= course.courseName %>' ">Collection </button>
-            <% if( course.coursePay != "Free"){ %>
+            <!-- <% if( course.coursePay != "Free"){ %>
               <button id='addTOCartBtn' class='personalBtn' onclick= "location.href ='/course/addtocart/<%= course.courseName %>' ">Add to cart</button>
-            <% } %>
+            <% } %> -->
             
 
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
