@@ -4,9 +4,11 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
+const LineStrategy = require('passport-line-auth').Strategy;
 const keys = require('./keys');
 const User = require('../models/user-model');
 const Mailer = require('./mailer');
+const jwt = require('jsonwebtoken');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -200,7 +202,31 @@ passport.use(
 )
 
 
-//PROFILE MODIFY PASSPORT
+
+//line login
+passport.use('line',
+
+    new LineStrategy(
+        {
+            channelID: keys.lineAuthChannelConfig.LINE_CHANNEL_ID,
+            channelSecret: keys.lineAuthChannelConfig.LINE_CHANNEL_SECRET,
+            callbackURL: "https://4315fda5.ngrok.io/auth/line/callback",
+            scope: ['profile', 'openid', 'email'],
+            botPrompt: 'normal'
+        },
+        (accessToken, refreshToken, params, profile, done) => {
+            console.log('line profile: ',profile);
+            var email = jwt.decode(params.id_token);
+            console.log('email: ',email)
+            // User.findOrCreate({ lineId: profile.id }, function (err, user) {
+            //   return cb(err, user);
+            // });
+            done(null);
+        }
+));
+
+
+//PROFILE MODIFY PASSPORT -----------------
 passport.use('settingModify', 
 
     new LocalStrategy( 
@@ -251,7 +277,6 @@ passport.use('settingModify',
             });
         }
 ));
-
 
 passport.use('passwordModify', 
 

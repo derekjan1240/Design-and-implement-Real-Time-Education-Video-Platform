@@ -28,6 +28,10 @@ router.post('/signup',
 	})
   );
 
+// auth with Line
+router.get('/line', passport.authenticate('line', {
+    scope: ['profile', 'openid', 'email']
+}));
 
 // auth with google+
 router.get('/google', passport.authenticate('google', {
@@ -63,5 +67,12 @@ router.get('/facebook/redirect', passport.authenticate('facebook',{ failureRedir
     // res.send(req.user);
     res.redirect('/profile');
 });
+
+router.get('/line/callback', passport.authenticate('line',{ failureRedirect: '/auth/login' }), (req, res) => {
+    res.send(req.user);
+    res.redirect('/profile');
+});
+
+
 
 module.exports = router;

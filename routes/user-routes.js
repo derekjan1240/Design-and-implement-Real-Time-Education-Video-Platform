@@ -101,7 +101,7 @@ router.post('/:id/checkbill',activeCheck, (req, res, next) => {
         new Bill({
             hostMember: req.user.email,
             totalPrice: req.body.totalPrice,
-            totalItem: req.body.item.length,
+            totalItem: req.body.item.length/2,
             itemList: req.body.item,
             active: false
 
