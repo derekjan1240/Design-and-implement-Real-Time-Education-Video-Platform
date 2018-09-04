@@ -134,6 +134,59 @@ passport.use(
     })
 );
 
+//LineStrategy --------------------------------
+passport.use('line',
+
+    new LineStrategy(
+        {
+            channelID: keys.lineAuthChannelConfig.LINE_CHANNEL_ID,
+            channelSecret: keys.lineAuthChannelConfig.LINE_CHANNEL_SECRET,
+            callbackURL: "https://cbfde966.ngrok.io/auth/line/callback",
+            scope: ['profile', 'openid', 'email'],
+            botPrompt: 'normal'
+        },
+        (accessToken, refreshToken, params, profile, done) => {
+            
+            
+            let profileDecode = jwt.decode(params.id_token);
+
+            console.log('email: ', profileDecode.email);
+            console.log('line profile id: ',profile.id);
+
+            User.findOne({email: profileDecode.email}).then((currentUser) => {
+                if(currentUser){
+                    // already have this user
+                    if(!currentUser.username){
+                        currentUser.username = profile.displayName;
+                    }
+                    currentUser.lineId =  profile.id;
+                    currentUser.thumbnail =  profile.pictureUrl;
+                    currentUser.active = true;
+
+                    currentUser.save().then((newUser) => {
+                        console.log('> user is: ', currentUser);
+                        done(null, currentUser);
+                    });
+
+                } else {
+                    // if not, create user in our db
+                    new User({
+                        username: profile.displayName,
+                        email: profileDecode.email,
+                        password: bcrypt.hashSync('0000', bcrypt.genSaltSync(10), null),
+                        active:true,
+                        lineId: profile.id,
+                        thumbnail: profile.pictureUrl
+                        
+                    }).save().then((newUser) => {
+                        console.log('> created new user: ', newUser);
+                        done(null, newUser);
+                    });
+                }
+            });
+
+        }
+));
 
 // FacebookStrategy --------------------------------      //notyet
 passport.use(
@@ -200,31 +253,6 @@ passport.use(
 
     })
 )
-
-
-
-//line login
-passport.use('line',
-
-    new LineStrategy(
-        {
-            channelID: keys.lineAuthChannelConfig.LINE_CHANNEL_ID,
-            channelSecret: keys.lineAuthChannelConfig.LINE_CHANNEL_SECRET,
-            callbackURL: "https://4315fda5.ngrok.io/auth/line/callback",
-            scope: ['profile', 'openid', 'email'],
-            botPrompt: 'normal'
-        },
-        (accessToken, refreshToken, params, profile, done) => {
-            console.log('line profile: ',profile);
-            var email = jwt.decode(params.id_token);
-            console.log('email: ',email)
-            // User.findOrCreate({ lineId: profile.id }, function (err, user) {
-            //   return cb(err, user);
-            // });
-            done(null);
-        }
-));
-
 
 //PROFILE MODIFY PASSPORT -----------------
 passport.use('settingModify', 

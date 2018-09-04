@@ -1,11 +1,13 @@
 const line = require('@line/bot-sdk');
+const mongoose = require('mongoose');
+const User = require('./models/user-model');
 const key = require('./config/keys');
 
 const express = require('express');
 
 // create Express app
 const app = express();
-
+app.use(express.static('public'));
 
 // create LINE SDK client
 const client = new line.Client(key.lineBotChannelConfig);
@@ -17,7 +19,6 @@ app.post('/echo', line.middleware(key.lineBotChannelConfig), (req, res) => {
     .all(req.body.events.map(handleEvent))
     .then((result) => {
       res.json(result);
-      //console.log('event: ', req.body.events[0]);
     })
     .catch((err) => {
       console.error(err);
@@ -28,61 +29,132 @@ app.post('/echo', line.middleware(key.lineBotChannelConfig), (req, res) => {
 // event handler
 function handleEvent(event) {
 
-  if (event.type !== 'message' || event.message.type !== 'text') {
+	//line userId
+	console.log('event.message.text:', event.message);
+	console.log('event: ', event.source.userId);
+	console.log('User',User);
+	User.findOne({lineId: "Ub863d96349c4b14af06e363534150c60"}).then((currentUser) => {
 
-	// guiding msg
-	let reply = { type: 'text', text: '請輸入 Menu 進入功能選單' };
-	//use reply API
-	return client.replyMessage(event.replyToken, reply);
+		console.log(currentUser);
 
-    // ignore non-text-message event
-    return Promise.resolve(null);
+	})
 
-  }else{
+   //  User.findOne({lineId: event.source.userId}).then((currentUser) => {
+   //   	console.log('222222');
+   //      if(currentUser){
+   //      	console.log('會員已經綁定line帳號');
+   //      	/*會員已經綁定line帳號*/
 
-  	//// 選單部分 ---
-    // Menu 功能選單
-    if(event.message.text === 'Menu' || event.message.text === 'menu'){
-      //選項表單
-      let menu = {
-          type: "template",
-          altText: "Input Key word: [Gossip][Baseball][CPBL][北宜][桃竹苗][中部][雲嘉南][高屏][東部及離島]",
-          template: {
-            type: "buttons",
-            text: "選擇查詢目標",
-            actions: [
-              {
-                type: "message",
-                label: "綁定帳號(Binding Account)",
-                text: "BA"
-              },
-              {
-                type: "message",
-                label: "pm2.5及時濃度",
-                text: "pm2.5"
-              },
-              {
-                type: "message",
-                label: "CPBL個人榜",
-                text: "CPBL"
-              }
-            ]
-          } 
-        }
-      
+   //          if (event.type !== 'message' || event.message.type !== 'text') {
+            	
+   //          	/* 接收到非文字訊息時 */
 
-      return client.replyMessage(event.replyToken, menu);
+			// 	// Guiding msg
+			// 	let reply = { type: 'text', text: '請輸入 Menu 進入功能選單' };
+			// 	//use reply API
+			// 	return client.replyMessage(event.replyToken, reply);
 
-    }else{
-    	//line userId
-    	console.log('event..source.userId:',event.source.userId);
-  		// create a text message
-    	let reply = { type: 'text', text: '輸入 Menu 進入功能選單' };
-    	//use reply API
-    	return client.replyMessage(event.replyToken, reply);
-    }
-  	
-  }
+			//   }else{
+		 
+			//   	/* 接收到文字訊息時 */
+
+			//     // Menu 功能選單
+			//     if(event.message.text === 'Menu' || event.message.text === 'menu'){
+
+			// 		//設定回應內容
+		 //            let reply = {
+			// 		  	"type": "template",
+			// 		  	"altText": "Input Key word:",
+			// 			"template": {
+			// 				"type": "buttons",
+			// 				"thumbnailImageUrl": "https://gdurl.com/1JRA",
+			// 		        "imageAspectRatio": "rectangle",
+			// 		        "imageSize": "cover",
+			// 		        "imageBackgroundColor": "#FFFFFF",
+			// 		        "title": "Course BOT",
+			// 		        "text": "Please select",
+			// 				"defaultAction": {
+			// 				    "type": "uri",
+			// 			        "label": "View detail",
+			// 			        "uri": "https://cbfde966.ngrok.io"
+			// 				},
+			// 			    "actions": [
+			// 			    	{
+			// 			            "type": "uri",
+			// 			        	"label": "官網",
+			// 			        	"uri": "https://cbfde966.ngrok.io"
+			// 			        },
+			// 			    	{
+			// 			  			"type": "uri",
+			// 			            "label": "綁定帳號",
+			// 			            "uri": "https://cbfde966.ngrok.io/auth/line"
+			// 			    	}
+			// 			    ]
+			// 			}
+			// 		}
+
+			//     	return client.replyMessage(event.replyToken, reply);
+
+			//     }
+
+
+			//     // key words
+			//     else if(event.message.text === 'Menu' || event.message.text === 'menu'){
+
+			//     }
+
+			//     // Guiding msg
+			//     else{
+			    	
+			//   		// create a text message
+			//     	let reply = { type: 'text', text: '輸入 Menu 進入功能選單' };
+			//     	//use reply API
+			//     	return client.replyMessage(event.replyToken, reply);
+			//     }
+		  	
+		 //  	}
+
+   //      }else{
+   //      	console.log('會員還未綁定line帳號');
+   //      	/*會員還未綁定line帳號*/
+
+   //      	//設定回應內容
+   //          let reply = {
+			//   	"type": "template",
+			//   	"altText": "Input Key word:",
+			// 	"template": {
+			// 		"type": "buttons",
+			// 		"thumbnailImageUrl": "https://gdurl.com/1JRA",
+			//         "imageAspectRatio": "rectangle",
+			//         "imageSize": "cover",
+			//         "imageBackgroundColor": "#FFFFFF",
+			//         "title": "Course BOT",
+			//         "text": "Please select",
+			// 		"defaultAction": {
+			// 		    "type": "uri",
+			// 	        "label": "View detail",
+			// 	        "uri": "https://cbfde966.ngrok.io"
+			// 		},
+			// 	    "actions": [
+			// 	    	{
+			// 	            "type": "uri",
+			// 	        	"label": "官網",
+			// 	        	"uri": "https://cbfde966.ngrok.io"
+			// 	        },
+			// 	    	{
+			// 	  			"type": "uri",
+			// 	            "label": "綁定帳號",
+			// 	            "uri": "https://cbfde966.ngrok.io/auth/line"
+			// 	    	}
+			// 	    ]
+			// 	}
+			// }
+
+	  //     	return client.replyMessage(event.replyToken, reply);
+   //      }
+
+   //  });
+
 
 }
 

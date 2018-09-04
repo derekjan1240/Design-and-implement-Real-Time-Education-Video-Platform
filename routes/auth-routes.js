@@ -58,6 +58,15 @@ router.get('/google/redirect', passport.authenticate('google', { failureRedirect
     }
 });
 
+router.get('/line/callback', passport.authenticate('line',{ failureRedirect: '/auth/login' }), (req, res) => {
+    //user password cheak
+    if(bcrypt.compareSync('0000', req.user.password)){
+      res.render('profile', { user: req.user, Msg:'profile', ErroMsg:'預設密碼為 0000 請自行更改'});
+    }else{
+      res.render('profile', { user: req.user, Msg:'profile', ErroMsg:''});
+    }
+});
+
 router.get('/twitter/redirect', passport.authenticate('twitter' ,{ failureRedirect: '/auth/login' }), (req, res) => {
     // res.send(req.user);
     res.redirect('/profile');
@@ -68,10 +77,7 @@ router.get('/facebook/redirect', passport.authenticate('facebook',{ failureRedir
     res.redirect('/profile');
 });
 
-router.get('/line/callback', passport.authenticate('line',{ failureRedirect: '/auth/login' }), (req, res) => {
-    res.send(req.user);
-    res.redirect('/profile');
-});
+
 
 
 

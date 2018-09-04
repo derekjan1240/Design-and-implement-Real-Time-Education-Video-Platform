@@ -10,6 +10,7 @@ const userSchema = new Schema({
     bill:[{}],
     ownedCourse:[String],
     googleId: String,
+    lineId: String,
     twitterId: String,
     thumbnail: String,
     active:{
