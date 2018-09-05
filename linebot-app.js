@@ -63,7 +63,7 @@ function handleEvent(event) {
 					//設定回應內容
 		            let reply = {
 					  	"type": "template",
-					  	"altText": "Input Key word:",
+					  	"altText": "PC user please input the Key word: [course], [recommend], [remind]",
 						"template": {
 							"type": "buttons",
 							"thumbnailImageUrl": "https://gdurl.com/1JRA",
@@ -84,19 +84,19 @@ function handleEvent(event) {
 						        	"uri": key.ngrokUrl.webUrl
 						        },
 				                {
-				               		type: "message",
-				                	label: "我的課程",
-				                	text: "course"
+				               		"type": "message",
+				                	"label": "我的課程",
+				                	"text": "course"
 				                },
 				                {
-				                	type: "message",
-				                	label: "推薦課程",
-				                	text: "recommend"
+				                	"type": "message",
+				                	"label": "推薦課程",
+				                	"text": "recommend"
 				                },
 				                {
-				                	type: "message",
-				                	label: "設定提醒",
-				                	text: "remind"
+				                	"type": "message",
+				                	"label": "設定提醒",
+				                	"text": "remind"
 				                }
 						    ]
 						}
@@ -151,7 +151,7 @@ function handleEvent(event) {
         	//設定回應內容
             let reply = {
 			  	"type": "template",
-			  	"altText": "Input Key word:",
+			  	"altText": "Link Account: " + key.ngrokUrl.webUrl + "/auth/line",
 				"template": {
 					"type": "buttons",
 					"thumbnailImageUrl": "https://gdurl.com/1JRA",
@@ -159,7 +159,7 @@ function handleEvent(event) {
 			        "imageSize": "cover",
 			        "imageBackgroundColor": "#FFFFFF",
 			        "title": "Course BOT",
-			        "text": "Please select",
+			        "text": "Please binding  your account first!",
 					"defaultAction": {
 					    "type": "uri",
 				        "label": "官網",
