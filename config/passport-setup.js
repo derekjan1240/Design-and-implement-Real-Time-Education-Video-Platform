@@ -93,7 +93,7 @@ passport.use(
         // options for google strategy
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret,
-        callbackURL: 'https://21366f96.ngrok.io/auth/google/redirect'   //when use ngrok
+        callbackURL: keys.ngrokUrl.webUrl + '/auth/google/redirect'   //when use ngrok
         // callbackURL: 'http://127.0.0.1:3000/auth/google/redirect'     //when use local
 
     }, (accessToken, refreshToken, profile, done) => {
@@ -111,7 +111,7 @@ passport.use(
                 currentUser.thumbnail =  profile._json.image.url;
                 currentUser.active = true;
 
-                currentUser.save().then((newUser) => {
+                currentUser.save().then((currentUser) => {
                     console.log('> user is: ', currentUser);
                     done(null, currentUser);
                 });
@@ -141,7 +141,7 @@ passport.use('line',
         {
             channelID: keys.lineAuthChannelConfig.LINE_CHANNEL_ID,
             channelSecret: keys.lineAuthChannelConfig.LINE_CHANNEL_SECRET,
-            callbackURL: "https://cbfde966.ngrok.io/auth/line/callback",
+            callbackURL: keys.ngrokUrl.webUrl + "/auth/line/callback",
             scope: ['profile', 'openid', 'email'],
             botPrompt: 'normal'
         },
@@ -150,8 +150,8 @@ passport.use('line',
             
             let profileDecode = jwt.decode(params.id_token);
 
-            console.log('email: ', profileDecode.email);
-            console.log('line profile id: ',profile.id);
+            // console.log('email: ', profileDecode.email);
+            // console.log('line profile id: ',profile.id);
 
             User.findOne({email: profileDecode.email}).then((currentUser) => {
                 if(currentUser){
@@ -163,7 +163,7 @@ passport.use('line',
                     currentUser.thumbnail =  profile.pictureUrl;
                     currentUser.active = true;
 
-                    currentUser.save().then((newUser) => {
+                    currentUser.save().then((currentUser) => {
                         console.log('> user is: ', currentUser);
                         done(null, currentUser);
                     });
@@ -188,71 +188,71 @@ passport.use('line',
         }
 ));
 
-// FacebookStrategy --------------------------------      //notyet
-passport.use(
+// // FacebookStrategy --------------------------------      //notyet
+// passport.use(
     
-    new FacebookStrategy({
-        // options for google strategy
-        clientID: keys.facebook.clientID,
-        clientSecret: keys.facebook.clientSecret,
-        //callbackURL: 'https://localhost:3000/auth/facebook/redirect'   //when use local
-        callbackURL: 'https://0f393789.ngrok.io/auth/facebook/redirect',  //when use ngrok
-        profileFields: ['id', 'displayName', 'photos', 'emails']
-    }, (accessToken, refreshToken, profile, done) => {
+//     new FacebookStrategy({
+//         // options for google strategy
+//         clientID: keys.facebook.clientID,
+//         clientSecret: keys.facebook.clientSecret,
+//         //callbackURL: 'https://localhost:3000/auth/facebook/redirect'   //when use local
+//         callbackURL: keys.ngrokUrl.webUrl + '/auth/facebook/redirect',  //when use ngrok
+//         profileFields: ['id', 'displayName', 'photos', 'emails']
+//     }, (accessToken, refreshToken, profile, done) => {
         
-        // check if user already exists in our own db
-        console.log('profile: ', profile);
+//         // check if user already exists in our own db
+//         console.log('profile: ', profile);
 
 
 
 
-    })
-);
+//     })
+// );
 
-// TwitterStrategy --------------------------------
-passport.use(
+// // TwitterStrategy --------------------------------
+// passport.use(
     
-    new TwitterStrategy({
-        // options for twitter strategy
-        consumerKey: keys.twitter.clientID,
-        consumerSecret: keys.twitter.clientSecret,
-        //callbackURL: 'http://127.0.0.1:3000/auth/twitter/redirect',     //when use local
-        callbackURL: 'https://0f393789.ngrok.io/auth/twitter/redirect',  //when use ngrok
-        includeEmail: true
-    }, (accessToken, refreshToken, profile, done) => {
+//     new TwitterStrategy({
+//         // options for twitter strategy
+//         consumerKey: keys.twitter.clientID,
+//         consumerSecret: keys.twitter.clientSecret,
+//         //callbackURL: 'http://127.0.0.1:3000/auth/twitter/redirect',     //when use local
+//         callbackURL: keys.ngrokUrl.webUrl + '/auth/twitter/redirect',  //when use ngrok
+//         includeEmail: true
+//     }, (accessToken, refreshToken, profile, done) => {
 
-         console.log('profile.emails: ',profile.emails);
+//          console.log('profile.emails: ',profile.emails);
 
-        User.findOne({email: profile.emails[0].value}).then((currentUser) => {
-            if(currentUser){
-                // already have this user      
-                currentUser.username = profile.displayName;
-                currentUser.twitterId =  profile.id;
-                currentUser.thumbnail =  profile._json.profile_image_url;
-                currentUser.active = true;
+//         User.findOne({email: profile.emails[0].value}).then((currentUser) => {
+//             if(currentUser){
+//                 // already have this user      
+//                 currentUser.username = profile.displayName;
+//                 currentUser.twitterId =  profile.id;
+//                 currentUser.thumbnail =  profile._json.profile_image_url;
+//                 currentUser.active = true;
 
-                currentUser.save().then((newUser) => {
-                    console.log('> user is: ', currentUser);
-                    done(null, currentUser);
-                });
+//                 currentUser.save().then((newUser) => {
+//                     console.log('> user is: ', currentUser);
+//                     done(null, currentUser);
+//                 });
                 
-            } else {
-                // if not, create user in our db
-                new User({
-                    username: profile.displayName,
-                    email:profile.emails[0].value,
-                    active:true,
-                    twitterId: profile.id,
-                    thumbnail: profile._json.profile_image_url
-                }).save().then((newUser) => {
-                    console.log('> created new user: ', newUser);
-                    done(null, newUser);
-                });
-            }
-        });
+//             } else {
+//                 // if not, create user in our db
+//                 new User({
+//                     username: profile.displayName,
+//                     email:profile.emails[0].value,
+//                     active:true,
+//                     twitterId: profile.id,
+//                     thumbnail: profile._json.profile_image_url
+//                 }).save().then((newUser) => {
+//                     console.log('> created new user: ', newUser);
+//                     done(null, newUser);
+//                 });
+//             }
+//         });
 
-    })
-)
+//     })
+// )
 
 //PROFILE MODIFY PASSPORT -----------------
 passport.use('settingModify', 
