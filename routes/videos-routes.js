@@ -3,10 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const router = require('express').Router();
 
-
-
+ 
 //影片封包
-router.get('/:courseName/:coursrEp', function(req, res, next){
+router.get('/:courseName/:coursrEp', (req, res, next) => {
 
 	const path = 'videos/' + req.params.courseName + '/' + req.params.coursrEp +'.mp4'
 	const stat = fs.statSync(path)
@@ -53,9 +52,8 @@ router.get('/:courseName/:coursrEp', function(req, res, next){
 });
 
 
-
 //管理員上傳課程影片 歸類課程路徑上傳資料庫
-router.post('/upload', function(req, res){
+router.post('/upload', (req, res)=> {
 
     Course.findOne({courseName: req.body.courseName}).then((newCourse) => {
 

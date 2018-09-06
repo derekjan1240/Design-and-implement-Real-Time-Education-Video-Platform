@@ -46,7 +46,7 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 // set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
-app.use('/postpage', postRoutes);
+app.use('/post', postRoutes);
 app.use('/user', userRoutes);
 app.use('/video', videosRoutes);
 app.use('/course', courseRoutes);

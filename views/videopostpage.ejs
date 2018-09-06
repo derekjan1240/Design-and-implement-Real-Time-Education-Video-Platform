@@ -3,21 +3,76 @@
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<title>Post</title>
-</head>
-<body style="background: #E1EFE6;">
-	<% include header %>
-	<h1><%= Videopage %></h1>
+	<style>
 
-	<div class='container' style="padding-top: 50px; background: #DCDCDC">
+            body{
+            	background: #E1EFE6;
+            }
+
+            input{
+
+                text-align: center;
+            } 
+
+            #postedfile{
+            	display: none;
+            }   
+
+            .container{
+            	padding: 50px; 
+            	background: #DCDCDC;
+            }        
+
+        </style>
+</head>
+<body>
+	<% include header %>
+
+	<div class='container'> 
 	    <div class="col-sm-12">
+
+	    	<h3>Video upload (User)</h3><br>
+
 	        <form method="post" enctype="multipart/form-data">
-	            <input type="file" id="files" name="files" accept=".mp4" multiple="multiple" />
-	            <p style="margin-top: 20px;">
-	                <input type="submit" value="Upload Files" class="btn btn-md btn-primary" />
-	            </p>
+
+	        	<label class="btn btn-info">
+					<input type="file" id="postedfile" name="recfile" accept=".mp4" />
+					<i class="fa fa-file-video-o"></i> 選擇檔案(.MP4)
+				</label>
+	            		
+            	<h3 id="uploadFileName"></h3>
+
+                <button  type="submit" class="btn btn-primary" formaction="/post/user/upload">Upload</button>
+
 	        </form>
 	    </div>
 	</div>
 
+	<h5><%= Msg %></h5>
+
 </body>
 </html>
+
+
+<script type="text/javascript">
+
+	let postedfile = document.getElementById('postedfile');
+	let uploadFileName = document.getElementById('uploadFileName');
+
+    setInterval(()=> {
+        FileName(); 
+    }, 1000);
+
+    function FileName(){
+
+        // console.log(postedfile.value);
+        if(postedfile.value){
+
+        	let tem = postedfile.value.split('\\');
+        	// C:/fakepath/filename.mp4
+
+        	uploadFileName.innerHTML = tem[2];
+        }
+    }
+
+</script>
