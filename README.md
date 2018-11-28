@@ -1,4 +1,4 @@
-# Design and implementation of Real-Time Education Video Platform
+# Design and implement Real-Time Education Video Platform
  This is a course project in NTUT
  
 ## About
