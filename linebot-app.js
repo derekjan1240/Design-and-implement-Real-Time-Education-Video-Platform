@@ -71,7 +71,7 @@ function handleEvent(event) {
 					        "imageSize": "cover",
 					        "imageBackgroundColor": "#FFFFFF",
 					        "title": "Course BOT",
-					        "text": "Please select",
+					        "text": "Please select(Login First)",
 							"defaultAction": {
 							    "type": "uri",
 						        "label": "View detail",
@@ -84,9 +84,9 @@ function handleEvent(event) {
 						        	"uri": key.ngrokUrl.webUrl
 						        },
 				                {
-				               		"type": "message",
+				               		"type": "uri",
 				                	"label": "我的課程",
-				                	"text": "course"
+				                	"uri": key.ngrokUrl.webUrl + "/profile/course"
 				                },
 				                {
 				                	"type": "message",
@@ -108,13 +108,14 @@ function handleEvent(event) {
 
 
 			    // key words
-			    else if(event.message.text === 'course' || event.message.text === 'Course'){
+			    
+			   	/*else if(event.message.text === 'course' || event.message.text === 'Course'){
 
 			    	let reply = { type: 'text', text: '進入我的課程' };
 					//use reply API
 					return client.replyMessage(event.replyToken, reply);
 
-			    }
+			    }*/
 
 			    else if(event.message.text === 'recommend' || event.message.text === 'Recommend'){
 

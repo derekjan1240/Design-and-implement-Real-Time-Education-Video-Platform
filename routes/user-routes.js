@@ -206,15 +206,4 @@ router.get('/:billid/finished', authCheck, (req, res) => {
 });
 
 
-
-
-
-
-
-// 使用者上傳影片
-router.post('/:id/postvideo', authCheck, function(req, res, next){
-
-});
-
-
 module.exports = router;

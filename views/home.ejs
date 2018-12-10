@@ -4,29 +4,38 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         <title>Course</title>
+        <style>
+            @import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+            body{
+                background: #E1EFE6;
+                font-family: 'Noto Sans TC';
+            }
+        </style>
     </head>
-    <body style="background: #E1EFE6;">
+    <body>
         <% include header %>
-        
-        <div class="container" style=" padding-top: 50px; height: auto">
+
+        <div class="container" style="padding-top:100px; ">
             <div class="jumbotron">
-
-              <h1 class="display-4">Home Page!</h1>
-              <p class="lead">Balala page info.</p>
-              <hr class="my-4">
-              <img class="card-img-top" src="./T-Test.png" alt="Card image cap" width=10%">
-              <h5 class="card-title">LineBot QRcode</h5>
-              
-
-              <% if (user) { %>   
-                <!-- 已登入 -->
-              <% } else{ %>
-                <!-- 未登入 -->
-                <a class="btn btn-primary btn-lg" href="/auth/login" role="button">Login</a>
-              <% } %>
-
-            </div>
+                <h1 class="display-4">
+                    即時教學影音平台之設計與實作
+                </h1>
+                <p class="lead">
+                    Design-and-implement-Real-Time-Education-Video-Platform
+                    <br><br>
+                    MVC版
+                </p>
+                <hr class="my-4">
+                <p> > 指導教授 王永鐘</p>
+                <p> > 電機四丙 103310118 詹鎧鍵</p>
+                <a class="btn btn-primary btn-lg" href="https://github.com/derekjan1240" role="button">Sourse Code</a>
+                <% if (user) { %>   
+                  <!-- 已登入 -->
+                <% } else{ %>
+                  <!-- 未登入 -->
+                  <a class="btn btn-primary btn-lg" href="/auth/login" role="button">Login</a>
+                <% } %>
+            </div> 
         </div>
-        
     </body>
 </html>
