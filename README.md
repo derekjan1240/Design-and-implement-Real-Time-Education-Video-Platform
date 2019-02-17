@@ -3,7 +3,7 @@
  
 ## About
 Node JS server (Express + EJS + Bootstrap + Mlab)  
-Use Node JS to create the education video platform with Member system and Shopping-cart system and LineBot and WebRTC streaming.
+Use Node JS to create the education video platform with Member system, Shopping-cart system, LineBot and WebRTC streaming.
 
 ## Systems
 #### Member system
